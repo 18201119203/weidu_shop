@@ -1,0 +1,96 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.example.weiduapp"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'com.android.support:support-vector-drawable:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    /*api 'com.umeng.sdk:common:latest.integration'8
+        api 'com.umeng.sdk:analytics:latest.integration'*/
+    //友盟
+    //okhttp
+    api 'com.squareup.okhttp3:okhttp:3.12.1'
+    api 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    //黄油刀
+    implementation 'com.jakewharton:butterknife:8.7.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    //图片加载框架，glide
+    implementation 'com.github.bumptech.glide:glide:4.1.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    //xrecyclerview
+    implementation 'com.jcodecraeer:xrecyclerview:1.5.9'
+    api project(path: ':lib_core')
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.1.9
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+    //banner
+    implementation 'com.recker.flybanner:flybanner:1.3'
+    //2.布局文件
+    implementation 'com.github.xiaohaibin:XBanner:1.6.1'
+    //retorfit-重新封装okhttp网络框架
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+
+    //cardview
+    implementation 'com.android.support:cardview-v7:28.0.0'
+    //fresco
+    implementation 'com.facebook.fresco:fresco:1.5.0'
+    //EventBus
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation project(path: ':lib_network')
+    //Rxjava依赖
+
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+
+    //retorfit-重新封装okhttp网络框架
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
+    //支持rxjava的
+
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+}
+
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '27.1.1'    //此处填写你项目使用的sdk版本
+            }
+        }
+    }
+}
